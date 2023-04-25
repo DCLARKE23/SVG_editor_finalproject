@@ -1,32 +1,43 @@
 using Svg;
-using System.Reflection;
+using SVG_editor_finalproject.Handlers;
 
 namespace SVG_editor_finalproject
-{   
+{
     public partial class Form1 : Form
     {
         public ShapeDrawingController ShapeDrawingController { get; set; }
-        public DocumentModel Shapes { get; private set; }
+        public DocumentModel DocumentModel { get; private set; }
         public FileHandler FileHandler { get; }
         public UndoRedoHandler UndoRedoHandler { get; }
         public SelectHandler SelectHandler { get; set; }
         public ToolController ToolController { get; set; } = new();
+        public LayerController LayerController { get; set; }
 
         public Form1()
         {
             InitializeComponent();
             FileHandler = new("json", OnSave, OnOpen);
-            Shapes = new DocumentModel();
-            UndoRedoHandler = new UndoRedoHandler(Shapes.Clone());
-            SelectHandler = new SelectHandler();    // may change
+            DocumentModel = new DocumentModel();
+            UndoRedoHandler = new UndoRedoHandler(DocumentModel.Clone());
+            SelectHandler = new SelectHandler();
             lineColorDialog.Color = Color.Black;
             fillColorDialog.Color = Color.Black;
             pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.BringToFront();
+            pictureBox1.BringToFront(); // grid can still be seen but shapes may also be drawn
             UpdatePanels();
             UpdateHexBoxes();
             ShapeDrawingController = new ShapeDrawingController(pictureBox1);
             ToolController.Tool = Tool.Initial;
+            var Layer = new LayerControl();
+            Layer.layerSelect += LayerSelect;
+            Layer.lockButtonClick += LockButton;
+            Layer.visibleButtonClick += VisibleButton;
+            Layer.frontButtonClick += FrontButton;
+            Layer.backButtonClick += BackButton;
+            LayerController = new LayerController(Layer);
+            flowLayoutPanel2.Controls.Add(Layer);
+            LayerController.AddLayer(Layer);
+            DocumentModel.LayerModels.Add(Layer.Model);
         }
         public void DocumentChanged()
         {
@@ -36,14 +47,14 @@ namespace SVG_editor_finalproject
 // ================================= FILE HANDLING =========================================
         public void OnSave(string fileName)
         {
-            var doc = Shapes.ToJson();
+            var doc = DocumentModel.ToJson();
             File.WriteAllText(fileName, doc);
         }
         public void OnOpen(string fileName)
         {
             var text = File.ReadAllText(fileName);
             var doc = DocumentModel.FromJson(text);
-            Shapes = doc;
+            DocumentModel = doc;
             DocumentChanged();
         }
         private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
@@ -62,13 +73,12 @@ namespace SVG_editor_finalproject
         {
             if (!FileHandler.NewWithCheck())
                 return;
-            Shapes = new DocumentModel();
+            DocumentModel = new DocumentModel();
             DocumentChanged();
-            // UndoController.Reset(model);
         }
         public SvgDocument GetSvgDocument() // make the next 3 functions cleaner
         {
-            return Shapes.Shapes.ToSvg();
+            return DocumentModel.LayerModels.ToSvg();
         }
         public string GetXml()
         {
@@ -146,7 +156,8 @@ namespace SVG_editor_finalproject
 // ================================= SHAPE DRAWING ==============================================
         public void StartDrawingShape(SimpleShapeModel shape)
         {
-            Shapes.Shapes.Add(shape);   // change name to something better
+            if (LayerController.CurrentLayer.Lock) return;
+            LayerController.CurrentLayer.Model.Shapes.Add(shape);
             ShapeDrawingController.StartDrawing(shape, MousePosition);
             pictureBox1.Capture = true;
         }
@@ -155,14 +166,15 @@ namespace SVG_editor_finalproject
             if (!ShapeDrawingController.IsDrawing())
                 return;
             ShapeDrawingController.StopDrawing();
-            UndoRedoHandler.NewItem(Shapes.Clone());
+            UndoRedoHandler.NewItem(DocumentModel.Clone());
             DocumentChanged();
         }
         public void CancelDrawingShape()
         {
             if (!ShapeDrawingController.IsDrawing())
                 return;
-            Shapes.Shapes.Remove(ShapeDrawingController.Shape);
+            LayerController.CurrentLayer.Model.Shapes.Remove(ShapeDrawingController.Shape);
+            // DocumentModel.LayerModels.Remove(ShapeDrawingController.Shape);
             ShapeDrawingController.StopDrawing();
             DocumentChanged();
         }
@@ -278,7 +290,7 @@ namespace SVG_editor_finalproject
                     g.DrawLine(p, x * cellSize, 0, x * cellSize, numOfCells * cellSize);
                 }
             }
-            var svgDoc = Shapes.Shapes.ToSvg();
+            var svgDoc = DocumentModel.LayerModels.ToSvg();
             svgDoc.Draw(e.Graphics);
         }
         private void gridControl_CheckedChanged(object sender, EventArgs e)
@@ -291,7 +303,7 @@ namespace SVG_editor_finalproject
             var doc = UndoRedoHandler.Undo();
             if (doc is not null)
             {
-                Shapes = doc;
+                DocumentModel = doc;
                 DocumentChanged();
             }  
         }
@@ -300,7 +312,7 @@ namespace SVG_editor_finalproject
             var doc = UndoRedoHandler.Redo();
             if (doc is not null)
             {
-                Shapes = doc;
+                DocumentModel = doc;
                 DocumentChanged();
             }    
         }
@@ -313,7 +325,6 @@ namespace SVG_editor_finalproject
                 selectToolStripMenuItem.Checked = true;
                 ToolController.Tool = Tool.Select;
                 textBox3.Text = "Select";
-                // DocumentChanged();
             }
             selectToolStripMenuItem.Checked = false;
             DocumentChanged();    
@@ -321,7 +332,7 @@ namespace SVG_editor_finalproject
         private void deleteDelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             foreach(var s in SelectHandler.SelectedShapes)
-                Shapes.Shapes.Remove(s);
+                LayerController.CurrentLayer.Model.Shapes.Remove(s);
             SelectHandler.ClearSelected();
             DocumentChanged();
         }
@@ -335,12 +346,11 @@ namespace SVG_editor_finalproject
         }
         public SimpleShapeModel? HitTest(Point pt)
         {
-            foreach (var x in Shapes.Shapes)
+            foreach (var x in LayerController.CurrentLayer.Model.Shapes)
             {
                 if (HitTest(x, pt))
                     return x;
             }
-
             return null;
         }
         public void SelectWithMouse()
@@ -359,8 +369,37 @@ namespace SVG_editor_finalproject
         }
         private void clearCtrlLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Shapes.Shapes.Clear();
+            LayerController.CurrentLayer.Model.Shapes.Clear();
             DocumentChanged();
-        }   
+        }
+// ============================= LAYER CONTROLS ========================================
+        private void button3_Click(object sender, EventArgs e)  // add new layer
+        {
+            var Layer = new LayerControl();
+            flowLayoutPanel2.Controls.Add(new LayerControl());
+            LayerController.AddLayer(Layer);
+        }
+
+        public void LayerSelect(object? sender, EventArgs e)
+        {
+
+        }
+
+        public void LockButton(object? sender, EventArgs e)
+        {
+
+        }
+        public void VisibleButton(object? sender, EventArgs e)
+        {
+            pictureBox1.Invalidate();
+        }
+        public void FrontButton(object? sender, EventArgs e)
+        {
+
+        }
+        public void BackButton(object? sender, EventArgs e)
+        {
+
+        }
     }
 }

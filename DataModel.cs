@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SVG_editor_finalproject.Handlers;
 
 namespace SVG_editor_finalproject
 {
@@ -13,9 +14,18 @@ namespace SVG_editor_finalproject
             Name = GetType().Name;
         }
     }
-    public class DocumentModel
+    public class LayerModel
     {
         public List<SimpleShapeModel> Shapes { get; set; } = new();
+        public bool Visible { get; set; }
+        public bool Locked { get; set; }
+        
+    }
+    public class DocumentModel
+    {
+        // public List<LayerController> Layers { get; set; }
+        // public List<SimpleShapeModel> Shapes { get; set; } = new();
+        public List<LayerModel> LayerModels { get; set; } = new();
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this,

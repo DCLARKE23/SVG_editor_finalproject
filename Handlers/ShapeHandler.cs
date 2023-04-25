@@ -1,4 +1,4 @@
-﻿namespace SVG_editor_finalproject
+﻿namespace SVG_editor_finalproject.Handlers
 {
     public class ShapeDrawingController
     {

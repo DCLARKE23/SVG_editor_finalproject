@@ -1,4 +1,4 @@
-﻿namespace SVG_editor_finalproject
+﻿namespace SVG_editor_finalproject.Handlers
 {
     public class UndoRedoHandler
     {
@@ -19,7 +19,7 @@
         }
         public DocumentModel? Undo()
         {
-            if (UndoStack.Count == 0) 
+            if (UndoStack.Count == 0)
             {
                 return null;
             }
@@ -27,7 +27,7 @@
             Current = UndoStack.Pop();
             return Current.Clone();
         }
-        public DocumentModel? Redo() 
+        public DocumentModel? Redo()
         {
             if (RedoStack.Count == 0)
             {

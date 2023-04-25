@@ -84,14 +84,21 @@ namespace SVG_editor_finalproject
             }
             return null;              
         }
-        public static SvgDocument ToSvg(this List<SimpleShapeModel> Shapes)
+        public static SvgDocument ToSvg(this List<LayerModel> Layers)
         {
             var r = new SvgDocument();
-            foreach (var e in Shapes)
+            
+            foreach (var layer in Layers)
             {
-                var tmp = e.ToSvg();
-                if (tmp != null)
-                    r.Children.Add(tmp);
+                if (!layer.Visible)
+                {
+                    foreach (var shape in layer.Shapes)
+                    {
+                        var tmp = shape.ToSvg();
+                        if (tmp != null)
+                            r.Children.Add(tmp);
+                    }
+                }
             }
             return r;
         }

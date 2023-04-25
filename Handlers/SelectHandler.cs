@@ -4,21 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SVG_editor_finalproject
+namespace SVG_editor_finalproject.Handlers
 {
     public class SelectHandler
     {
         public List<SimpleShapeModel> SelectedShapes { get; private set; } = new();
 
-        public void ClearSelected() 
+        public void ClearSelected()
         {
             SelectedShapes.Clear();
-            // DocumentChanged in form
         }
         public void AddToSelection(SimpleShapeModel shape)
         {
             shape.StrokeColor = ColorModel.Red;
-            SelectedShapes.Add(shape);            
+            SelectedShapes.Add(shape);
         }
     }
 }

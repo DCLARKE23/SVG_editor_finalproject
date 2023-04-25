@@ -1,14 +1,14 @@
-﻿namespace SVG_editor_finalproject
+﻿namespace SVG_editor_finalproject.Handlers
 {
-	public class FileHandler
-	{
-		public string fileName = "";
+    public class FileHandler
+    {
+        public string fileName = "";
         private bool _modified;
 
-		public OpenFileDialog OpenDialog { get; } = new ();
+        public OpenFileDialog OpenDialog { get; } = new();
         public SaveFileDialog SaveDialog { get; } = new();
-		public Action<string> onOpen { get; }
-		public Action<string> onSave { get; }
+        public Action<string> onOpen { get; }
+        public Action<string> onSave { get; }
         public string fileExtension { get; }
         public event EventHandler ModifiedChanged;
         public bool Modified
