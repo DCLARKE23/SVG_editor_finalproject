@@ -20,7 +20,6 @@
                 ModifiedChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-
         public FileHandler(string ext, Action<string> onSave, Action<string> onOpen)
         {
             fileExtension = ext;
@@ -29,7 +28,6 @@
             this.onSave = onSave;
             this.onOpen = onOpen;
         }
-
         public bool SaveWithDialog()
         {
             if (SaveDialog.ShowDialog() != DialogResult.OK)
@@ -49,7 +47,6 @@
             Modified = false;
             return true;
         }
-
         public bool Open()
         {
             if (!CheckModifiedAndCanContinue())

@@ -12,7 +12,6 @@
             Width = Current.X - Start.X,
             Height = Current.Y - Start.Y
         };
-
         public ShapeDrawingController(Control control)
         {
             Control = control;
@@ -20,13 +19,11 @@
             Start = new PointModel();
             Current = Start;
         }
-
         public PointModel ScreenToControl(Point pt)
         {
             var tmp = Control.PointToScreen(Point.Empty);
             return new PointModel() { X = pt.X - tmp.X, Y = pt.Y - tmp.Y };
         }
-
         public void StartDrawing(SimpleShapeModel shapeModel, Point pt)
         {
             Shape = shapeModel;
@@ -35,7 +32,6 @@
             Shape.Size = new SizeModel() { Width = 0, Height = 0 };
             Current = Start;
         }
-
         public void Update(Point pt)
         {
             Current = ScreenToControl(pt);
@@ -44,12 +40,10 @@
                 Shape.Size = Size;
             }
         }
-
         public void StopDrawing()
         {
             Shape = null;
         }
-
         public bool IsDrawing()
         {
             return Shape != null;

@@ -8,19 +8,17 @@ namespace SVG_editor_finalproject
 {
     public class SelectHandler
     {
-        public List<SimpleShapeModel> SelectedShapes { get; set; }
+        public List<SimpleShapeModel> SelectedShapes { get; private set; } = new();
 
         public void ClearSelected() 
         {
             SelectedShapes.Clear();
             // DocumentChanged in form
         }
-
         public void AddToSelection(SimpleShapeModel shape)
         {
             shape.StrokeColor = ColorModel.Red;
-            SelectedShapes.Add(shape);
-            
+            SelectedShapes.Add(shape);            
         }
     }
 }

@@ -43,7 +43,6 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.deleteDelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearCtrlLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shapeToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,9 +51,6 @@
             this.squareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ellipseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gettingStartedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.basicControlsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lineColorDialog = new System.Windows.Forms.ColorDialog();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -93,8 +89,7 @@
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.toolsToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
             this.menuStrip2.Size = new System.Drawing.Size(1293, 28);
@@ -173,7 +168,6 @@
             this.toolStripSeparator4,
             this.deleteDelToolStripMenuItem,
             this.toolStripSeparator3,
-            this.selectAllToolStripMenuItem,
             this.clearCtrlLToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
@@ -214,13 +208,6 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
             // 
-            // selectAllToolStripMenuItem
-            // 
-            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
-            this.selectAllToolStripMenuItem.Text = "Select All";
-            // 
             // clearCtrlLToolStripMenuItem
             // 
             this.clearCtrlLToolStripMenuItem.Name = "clearCtrlLToolStripMenuItem";
@@ -246,65 +233,44 @@
             this.squareToolStripMenuItem,
             this.ellipseToolStripMenuItem});
             this.shapeToolToolStripMenuItem.Name = "shapeToolToolStripMenuItem";
-            this.shapeToolToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.shapeToolToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
             this.shapeToolToolStripMenuItem.Text = "Shape Tool";
             // 
             // rectangleToolStripMenuItem
             // 
             this.rectangleToolStripMenuItem.Name = "rectangleToolStripMenuItem";
             this.rectangleToolStripMenuItem.ShowShortcutKeys = false;
-            this.rectangleToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.rectangleToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.rectangleToolStripMenuItem.Text = "Rectangle";
             this.rectangleToolStripMenuItem.Click += new System.EventHandler(this.rectangleToolStripMenuItem_Click);
             // 
             // circleToolStripMenuItem
             // 
             this.circleToolStripMenuItem.Name = "circleToolStripMenuItem";
-            this.circleToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.circleToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.circleToolStripMenuItem.Text = "Circle";
             this.circleToolStripMenuItem.Click += new System.EventHandler(this.circleToolStripMenuItem_Click);
             // 
             // squareToolStripMenuItem
             // 
             this.squareToolStripMenuItem.Name = "squareToolStripMenuItem";
-            this.squareToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.squareToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.squareToolStripMenuItem.Text = "Square";
             this.squareToolStripMenuItem.Click += new System.EventHandler(this.squareToolStripMenuItem_Click);
             // 
             // ellipseToolStripMenuItem
             // 
             this.ellipseToolStripMenuItem.Name = "ellipseToolStripMenuItem";
-            this.ellipseToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.ellipseToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.ellipseToolStripMenuItem.Text = "Ellipse";
             this.ellipseToolStripMenuItem.Click += new System.EventHandler(this.ellipseToolStripMenuItem_Click);
             // 
             // selectToolStripMenuItem
             // 
             this.selectToolStripMenuItem.Name = "selectToolStripMenuItem";
-            this.selectToolStripMenuItem.Size = new System.Drawing.Size(217, 26);
+            this.selectToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
             this.selectToolStripMenuItem.Text = "Select";
             this.selectToolStripMenuItem.Click += new System.EventHandler(this.selectToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gettingStartedToolStripMenuItem,
-            this.basicControlsToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // gettingStartedToolStripMenuItem
-            // 
-            this.gettingStartedToolStripMenuItem.Name = "gettingStartedToolStripMenuItem";
-            this.gettingStartedToolStripMenuItem.Size = new System.Drawing.Size(192, 26);
-            this.gettingStartedToolStripMenuItem.Text = "Getting Started";
-            // 
-            // basicControlsToolStripMenuItem
-            // 
-            this.basicControlsToolStripMenuItem.Name = "basicControlsToolStripMenuItem";
-            this.basicControlsToolStripMenuItem.Size = new System.Drawing.Size(192, 26);
-            this.basicControlsToolStripMenuItem.Text = "Basic Controls";
             // 
             // pictureBox1
             // 
@@ -445,9 +411,12 @@
             // trackBar1
             // 
             this.trackBar1.Location = new System.Drawing.Point(6, 61);
+            this.trackBar1.Maximum = 13;
+            this.trackBar1.Minimum = 3;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(125, 53);
             this.trackBar1.TabIndex = 0;
+            this.trackBar1.Value = 3;
             // 
             // openFileDialog1
             // 
@@ -460,7 +429,7 @@
             this.groupBox3.Controls.Add(this.gridControl);
             this.groupBox3.Location = new System.Drawing.Point(1019, 386);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(240, 102);
+            this.groupBox3.Size = new System.Drawing.Size(240, 136);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Miscellaneous Controls";
@@ -536,7 +505,6 @@
         private ToolStripMenuItem undoCtrlZToolStripMenuItem;
         private ToolStripMenuItem redoCtrlYToolStripMenuItem;
         private ToolStripMenuItem deleteDelToolStripMenuItem;
-        private ToolStripMenuItem selectAllToolStripMenuItem;
         private ToolStripMenuItem clearCtrlLToolStripMenuItem;
         private ToolStripMenuItem shapeToolToolStripMenuItem;
         private ToolStripMenuItem rectangleToolStripMenuItem;
@@ -564,9 +532,6 @@
         private Button button2;
         private Button button1;
         private ToolStripMenuItem selectToolStripMenuItem;
-        private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem gettingStartedToolStripMenuItem;
-        private ToolStripMenuItem basicControlsToolStripMenuItem;
         private GroupBox groupBox3;
         private CheckBox gridControl;
         private TextBox textBox2;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SVG_editor_finalproject
+﻿namespace SVG_editor_finalproject
 {
     public enum Tool
     {
@@ -18,14 +12,12 @@ namespace SVG_editor_finalproject
     public class ToolController
     {
         private Tool tool = Tool.Initial;
-
         public Tool Tool
         {
             get => tool;
             set
             {
                 tool = value;
-
             }
         }
     }

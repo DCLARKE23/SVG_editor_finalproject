@@ -91,7 +91,7 @@ namespace SVG_editor_finalproject
     public class SquareModel : SimpleShapeModel
     {
     }
-    public class PolyLineModel : ShapeModel
+    public class PolyLineModel : ShapeModel // may not need
     {
         public List<PointModel> Points { get; set; } = new();
     }

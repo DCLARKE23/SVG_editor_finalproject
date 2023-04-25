@@ -5,7 +5,6 @@
         public DocumentModel Current;
         public Stack<DocumentModel> UndoStack { get; private set; }
         public Stack<DocumentModel> RedoStack { get; private set; }
-
         public UndoRedoHandler(DocumentModel doc)
         {
             Current = doc;
@@ -18,21 +17,26 @@
             UndoStack.Clear();
             RedoStack.Clear();
         }
-
-        public DocumentModel Undo()
+        public DocumentModel? Undo()
         {
+            if (UndoStack.Count == 0) 
+            {
+                return null;
+            }
             RedoStack.Push(Current);
             Current = UndoStack.Pop();
-            return Current;
+            return Current.Clone();
         }
-
-        public DocumentModel Redo() 
+        public DocumentModel? Redo() 
         {
+            if (RedoStack.Count == 0)
+            {
+                return null;
+            }
             UndoStack.Push(Current);
             Current = RedoStack.Pop();
-            return Current;
+            return Current.Clone();
         }
-
         public void NewItem(DocumentModel item)
         {
             UndoStack.Push(Current);

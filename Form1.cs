@@ -2,8 +2,7 @@ using Svg;
 using System.Reflection;
 
 namespace SVG_editor_finalproject
-{
-    
+{   
     public partial class Form1 : Form
     {
         public ShapeDrawingController ShapeDrawingController { get; set; }
@@ -17,7 +16,8 @@ namespace SVG_editor_finalproject
         {
             InitializeComponent();
             FileHandler = new("json", OnSave, OnOpen);
-            UndoRedoHandler = new UndoRedoHandler(Shapes);
+            Shapes = new DocumentModel();
+            UndoRedoHandler = new UndoRedoHandler(Shapes.Clone());
             SelectHandler = new SelectHandler();    // may change
             lineColorDialog.Color = Color.Black;
             fillColorDialog.Color = Color.Black;
@@ -26,15 +26,19 @@ namespace SVG_editor_finalproject
             UpdatePanels();
             UpdateHexBoxes();
             ShapeDrawingController = new ShapeDrawingController(pictureBox1);
-            Shapes = new DocumentModel();
             ToolController.Tool = Tool.Initial;
         }
+        public void DocumentChanged()
+        {
+            pictureBox1.Invalidate();
+            FileHandler.Modified = true;
+        }
+// ================================= FILE HANDLING =========================================
         public void OnSave(string fileName)
         {
             var doc = Shapes.ToJson();
             File.WriteAllText(fileName, doc);
         }
-
         public void OnOpen(string fileName)
         {
             var text = File.ReadAllText(fileName);
@@ -42,6 +46,42 @@ namespace SVG_editor_finalproject
             Shapes = doc;
             DocumentChanged();
         }
+        private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileHandler.SaveWithDialog();
+        }
+        private void saveCtrlSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileHandler.SaveWithCurrentName();
+        }
+        private void openCtrlOToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            FileHandler.Open();
+        }
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!FileHandler.NewWithCheck())
+                return;
+            Shapes = new DocumentModel();
+            DocumentChanged();
+            // UndoController.Reset(model);
+        }
+        public SvgDocument GetSvgDocument() // make the next 3 functions cleaner
+        {
+            return Shapes.Shapes.ToSvg();
+        }
+        public string GetXml()
+        {
+            return GetSvgDocument().GetXML();
+        }
+        private void exportSVGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "SVG files (*.svg)|*.svg|All files (*.*)|*.*";
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK)
+                return;
+            File.WriteAllText(saveFileDialog1.FileName, GetXml());
+        }
+// ================================== COLOUR CONTROLS ========================================
         private void UpdatePanels()
         {
             panel1.BackColor = fillColorDialog.Color;
@@ -77,13 +117,33 @@ namespace SVG_editor_finalproject
             // Create and return a Color object representing the RGB color
             Color color = Color.FromArgb(red, green, blue);
             return color;
-        }
-
-        public void DocumentChanged()
+        }       
+        private void button1_Click(object sender, EventArgs e)  // colour dialog button (line)
         {
-            pictureBox1.Invalidate();
-            FileHandler.Modified = true;
+            lineColorDialog.ShowDialog();
+            UpdatePanels();
+            UpdateHexBoxes();
         }
+        private void button2_Click(object sender, EventArgs e)  // colour dialog button (fill)
+        {
+            fillColorDialog.ShowDialog();
+            UpdatePanels();
+            UpdateHexBoxes();
+        }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            /*
+            if (textBox1.Text.StartsWith('#') && textBox1.Text.Length == 7)
+            {
+                UpdateHexPanels();
+            } */
+        }
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            /*
+            UpdateHexBoxes(); */
+        }
+// ================================= SHAPE DRAWING ==============================================
         public void StartDrawingShape(SimpleShapeModel shape)
         {
             Shapes.Shapes.Add(shape);   // change name to something better
@@ -98,7 +158,6 @@ namespace SVG_editor_finalproject
             UndoRedoHandler.NewItem(Shapes.Clone());
             DocumentChanged();
         }
-
         public void CancelDrawingShape()
         {
             if (!ShapeDrawingController.IsDrawing())
@@ -107,7 +166,6 @@ namespace SVG_editor_finalproject
             ShapeDrawingController.StopDrawing();
             DocumentChanged();
         }
-
         public void UpdateShape()
         {
             if (!ShapeDrawingController.IsDrawing())
@@ -115,22 +173,34 @@ namespace SVG_editor_finalproject
             ShapeDrawingController.Update(MousePosition);
             DocumentChanged();
         }
-
-        private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void rectangleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FileHandler.SaveWithDialog();
+            if (rectangleToolStripMenuItem.Checked)
+            {
+                rectangleToolStripMenuItem.Checked = false;
+            }
+            rectangleToolStripMenuItem.Checked = true;
+            ToolController.Tool = Tool.Rectangle;
+            textBox3.Text = "Rectangle";
+        }
+        private void circleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolController.Tool = Tool.Circle;
+            textBox3.Text = "Circle";
         }
 
-       
-        private void saveCtrlSToolStripMenuItem_Click(object sender, EventArgs e)
+        private void squareToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FileHandler.SaveWithCurrentName();
-        }
-        private void openCtrlOToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            FileHandler.Open();
+            ToolController.Tool = Tool.Square;
+            textBox3.Text = "Square";
         }
 
+        private void ellipseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolController.Tool = Tool.Ellipse;
+            textBox3.Text = "Ellipse";
+        }
+// ============================================ PICTUREBOX CONTROLS ======================================
         private void pictureBox1_OnMouseDown(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left)
@@ -141,6 +211,7 @@ namespace SVG_editor_finalproject
                         StartDrawingShape(new RectangleModel()
                         {BorderRadius = trackBar2.Value,
                         StrokeColor = lineColorDialog.Color.ToColorModel(),
+                        StrokeWidth = trackBar1.Value,
                         FillColor = fillColorDialog.Color.ToColorModel(),
                         Filled = checkBox1.Checked,
                         });
@@ -148,6 +219,7 @@ namespace SVG_editor_finalproject
                     case Tool.Square:
                         StartDrawingShape(new SquareModel()
                         {BorderRadius = trackBar2.Value,
+                        StrokeWidth = trackBar1.Value,
                         StrokeColor = lineColorDialog.Color.ToColorModel(),
                         FillColor = fillColorDialog.Color.ToColorModel(),
                         Filled = checkBox1.Checked,
@@ -156,18 +228,19 @@ namespace SVG_editor_finalproject
                     case Tool.Circle: 
                         StartDrawingShape(new CircleModel()
                         {StrokeColor = lineColorDialog.Color.ToColorModel(),
-                        FillColor = fillColorDialog.Color.ToColorModel(),
+                         StrokeWidth = trackBar1.Value,
+                         FillColor = fillColorDialog.Color.ToColorModel(),
                         Filled = checkBox1.Checked,                        
                         }); 
                         break;
                     case Tool.Ellipse:
                         StartDrawingShape(new EllipseModel()
                         {StrokeColor = lineColorDialog.Color.ToColorModel(),
+                        StrokeWidth = trackBar1.Value,
                         FillColor = fillColorDialog.Color.ToColorModel(),
                         Filled = checkBox1.Checked,
                         });
-                        break;
-                    
+                        break;                    
                     case Tool.Select:
                         SelectWithMouse();
                         break;
@@ -208,46 +281,11 @@ namespace SVG_editor_finalproject
             var svgDoc = Shapes.Shapes.ToSvg();
             svgDoc.Draw(e.Graphics);
         }
-
-        private void button1_Click(object sender, EventArgs e)  // colour dialog button (line)
+        private void gridControl_CheckedChanged(object sender, EventArgs e)
         {
-            lineColorDialog.ShowDialog();
-            UpdatePanels();
-            UpdateHexBoxes();
-        }
-
-        private void button2_Click(object sender, EventArgs e)  // colour dialog button (fill)
-        {
-            fillColorDialog.ShowDialog();
-            UpdatePanels();
-            UpdateHexBoxes();
-        }
-
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!FileHandler.NewWithCheck())
-                return;
-            Shapes = new DocumentModel();
-            DocumentChanged();
-            // UndoController.Reset(model);
-        }
-        public SvgDocument GetSvgDocument() // make the next 3 functions cleaner
-        {
-            return Shapes.Shapes.ToSvg();
-        }
-        public string GetXml()
-        {
-            return GetSvgDocument().GetXML();
-        }
-
-        private void exportSVGToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            saveFileDialog1.Filter = "SVG files (*.svg)|*.svg|All files (*.*)|*.*";
-            if (saveFileDialog1.ShowDialog() != DialogResult.OK)
-                return;
-            File.WriteAllText(saveFileDialog1.FileName, GetXml());
-        }
-
+            pictureBox1.Invalidate();
+        }        
+// ======================================== UNDO REDO HANDLING =======================================
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var doc = UndoRedoHandler.Undo();
@@ -257,7 +295,6 @@ namespace SVG_editor_finalproject
                 DocumentChanged();
             }  
         }
-
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var doc = UndoRedoHandler.Redo();
@@ -265,15 +302,10 @@ namespace SVG_editor_finalproject
             {
                 Shapes = doc;
                 DocumentChanged();
-            }           
+            }    
         }
 
-        private void clearCtrlLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Shapes.Shapes.Clear();
-            DocumentChanged();
-        }
-
+// ===================================== SELECTION HANDLING ========================================
         private void selectToolStripMenuItem_Click(object sender, EventArgs e)  // edit to be more basic
         {
             if (!selectToolStripMenuItem.Checked)
@@ -284,20 +316,15 @@ namespace SVG_editor_finalproject
                 // DocumentChanged();
             }
             selectToolStripMenuItem.Checked = false;
-            DocumentChanged();
-            
+            DocumentChanged();    
         }
-
         private void deleteDelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach(var shape in SelectHandler.SelectedShapes)
-            {
-                SelectHandler.SelectedShapes.Remove(shape);
-            }
+            foreach(var s in SelectHandler.SelectedShapes)
+                Shapes.Shapes.Remove(s);
             SelectHandler.ClearSelected();
             DocumentChanged();
         }
-
         public bool HitTest(SimpleShapeModel e, Point pt)
         {
             if(e is SimpleShapeModel shape)
@@ -306,7 +333,6 @@ namespace SVG_editor_finalproject
             }
             return false;
         }
-
         public SimpleShapeModel? HitTest(Point pt)
         {
             foreach (var x in Shapes.Shapes)
@@ -317,7 +343,6 @@ namespace SVG_editor_finalproject
 
             return null;
         }
-
         public void SelectWithMouse()
         {
             var e = HitTest(MousePositionRelativeToPicture());
@@ -327,59 +352,15 @@ namespace SVG_editor_finalproject
             }
             DocumentChanged();
         }
-
         public Point MousePositionRelativeToPicture()
         {
             var pt = pictureBox1.PointToScreen(Point.Empty);
             return new Point(MousePosition.X - pt.X, MousePosition.Y - pt.Y);
         }
-
-        private void rectangleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void clearCtrlLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(rectangleToolStripMenuItem.Checked)
-            {
-                rectangleToolStripMenuItem.Checked = false;
-            }
-            rectangleToolStripMenuItem.Checked = true;
-            ToolController.Tool = Tool.Rectangle;
-            textBox3.Text = "Rectangle";
-        }
-
-        private void gridControl_CheckedChanged(object sender, EventArgs e)
-        {
-            pictureBox1.Invalidate();
-        }
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            /*
-            if (textBox1.Text.StartsWith('#') && textBox1.Text.Length == 7)
-            {
-                UpdateHexPanels();
-            } */
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            /*
-            UpdateHexBoxes(); */
-        }
-
-        private void circleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ToolController.Tool = Tool.Circle;
-            textBox3.Text = "Circle";
-        }
-
-        private void squareToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ToolController.Tool = Tool.Square;
-            textBox3.Text = "Square";
-        }
-
-        private void ellipseToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ToolController.Tool = Tool.Ellipse;
-            textBox3.Text = "Ellipse";
-        }
+            Shapes.Shapes.Clear();
+            DocumentChanged();
+        }   
     }
 }
