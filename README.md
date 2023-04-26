@@ -36,9 +36,11 @@ The primary features as as follows:
 
   - Undo and Redo are broken, not allowing the user to continue drawing afterwards
   - The Selection tool does not allow the user to deselect a shape after selecting
+  - Executable downloaded directly from Releases will not work reliably
 
 # What's Next
 
   - Improve the Hexadecimal colour feature to allow the user to enter a specific Hexadecimal value to select a colour
   - Refactoring and reorganizing of code
   - Polish the application UI
+  - Update Releases with a proper executable
