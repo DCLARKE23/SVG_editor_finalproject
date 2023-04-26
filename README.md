@@ -1,6 +1,6 @@
 # SVG_editor_finalproject
 
-This is a simple Windows Forms app developed in C# which allows the user to draw a variety of shapes to create an SVG document.
+This is a simple Windows Forms app developed in C# which allows the user to draw a variety of shapes to create an SVG document. I developed this app for my final project
 
 The primary features as as follows:
   - Shape tool which supports Squares, Rectangles, Circles and Ellipses
@@ -20,10 +20,17 @@ The primary features as as follows:
 
 # Screenshots
 
-![DaytimeScene](Screenshots/screenshot1.png)
-![UFO](Screenshots/screenshot2.png)
-![DefaultApp](Screenshots/screenshot3.png)
-![GridDemo](Screenshots/screenshot3.png)
+![DaytimeScene](Screenshots/screenshot1.PNG)
+![UFO](Screenshots/screenshot2.PNG)
+![DefaultApp](Screenshots/screenshot3.PNG)
+![GridDemo](Screenshots/screenshot4.PNG)
+
+# How to Use
+
+- Download executable from Releases section
+- Default shape tool is Rectangle but can be changed under Tools dropdown menu
+- Layers can be added by pressing "New Layer", click inside the layer control to draw on that layer
+- Keybinds for commands can be seen in dropdown menus
 
 # Known Issues
 
