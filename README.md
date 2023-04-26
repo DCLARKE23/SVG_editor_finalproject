@@ -1,8 +1,9 @@
 # SVG_editor_finalproject
 
-This is a simple Windows Forms app developed in C# which allows the user to draw a variety of shapes to create an SVG document. I developed this app for my final project
+This is a simple Windows Forms app developed in C# which allows the user to draw a variety of shapes to create an SVG document. I developed this app for my final project in my Advanced Programming Techniques course at university.
 
-The primary features as as follows:
+# Main Features
+
   - Shape tool which supports Squares, Rectangles, Circles and Ellipses
   - Colour tools which show the Hexadecimal value of the current colour
   - Undo and Redo changes
@@ -12,7 +13,7 @@ The primary features as as follows:
   - Select tool 
   - Editable Layers
 
-# Libraries Used
+# Libraries and Software Used
 
   - <a href="https://github.com/svg-net/SVG">SVG.NET</a> -> SVG graphics. 
   -  <a href="https://github.com/cdiggins/svg-editor">https://github.com/cdiggins/svg-editor</a> -> written by my professor, project ideas and skeleton
@@ -36,11 +37,9 @@ The primary features as as follows:
 
   - Undo and Redo are broken, not allowing the user to continue drawing afterwards
   - The Selection tool does not allow the user to deselect a shape after selecting
-  - Executable downloaded directly from Releases will not work reliably
 
 # What's Next
 
   - Improve the Hexadecimal colour feature to allow the user to enter a specific Hexadecimal value to select a colour
   - Refactoring and reorganizing of code
   - Polish the application UI
-  - Update Releases with a proper executable
