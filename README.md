@@ -18,10 +18,10 @@ Aside from using Windows Forms, the <a href="https://github.com/svg-net/SVG">SVG
 
 # Screenshots
 
-![Daytime Scene](Screenshots/screenshot1.png)
+![DaytimeScene](Screenshots/screenshot1.png)
 ![UFO](Screenshots/screenshot2.png)
-![Default App](Screenshots/screenshot3.png)
-![Grid Demo](Screenshots/screenshot3.png)
+![DefaultApp](Screenshots/screenshot3.png)
+![GridDemo](Screenshots/screenshot3.png)
 
 # Known Issues
 
