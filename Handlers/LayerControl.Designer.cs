@@ -93,6 +93,7 @@
             this.Controls.Add(this.button1);
             this.Name = "LayerControl";
             this.Size = new System.Drawing.Size(193, 101);
+            this.Click += new System.EventHandler(this.LayerControl_OnClick);
             this.ResumeLayout(false);
             this.PerformLayout();
 

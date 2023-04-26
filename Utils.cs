@@ -1,12 +1,4 @@
-﻿using ExCSS;
-using Newtonsoft.Json;
-using Svg;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Svg;
 
 namespace SVG_editor_finalproject
 {

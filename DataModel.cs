@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using SVG_editor_finalproject.Handlers;
-
-namespace SVG_editor_finalproject
+﻿namespace SVG_editor_finalproject
 {
     public class ElementModel
     {
@@ -23,8 +20,6 @@ namespace SVG_editor_finalproject
     }
     public class DocumentModel
     {
-        // public List<LayerController> Layers { get; set; }
-        // public List<SimpleShapeModel> Shapes { get; set; } = new();
         public List<LayerModel> LayerModels { get; set; } = new();
         public string ToJson()
         {

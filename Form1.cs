@@ -36,7 +36,7 @@ namespace SVG_editor_finalproject
             Layer.backButtonClick += BackButton;
             LayerController = new LayerController(Layer);
             flowLayoutPanel2.Controls.Add(Layer);
-            LayerController.AddLayer(Layer);
+            // LayerController.AddLayer(Layer);
             DocumentModel.LayerModels.Add(Layer.Model);
         }
         public void DocumentChanged()
@@ -76,7 +76,7 @@ namespace SVG_editor_finalproject
             DocumentModel = new DocumentModel();
             DocumentChanged();
         }
-        public SvgDocument GetSvgDocument() // make the next 3 functions cleaner
+        public SvgDocument GetSvgDocument()
         {
             return DocumentModel.LayerModels.ToSvg();
         }
@@ -99,8 +99,8 @@ namespace SVG_editor_finalproject
         }
         private void UpdateHexPanels()
         {
-            fillColorDialog.Color = HexToRGB(textBox1.Text);
-            lineColorDialog.Color = HexToRGB(textBox2.Text);
+            //fillColorDialog.Color = HexToRGB(textBox1.Text);
+            //lineColorDialog.Color = HexToRGB(textBox2.Text);
         }
         private void UpdateHexBoxes()
         {
@@ -174,7 +174,6 @@ namespace SVG_editor_finalproject
             if (!ShapeDrawingController.IsDrawing())
                 return;
             LayerController.CurrentLayer.Model.Shapes.Remove(ShapeDrawingController.Shape);
-            // DocumentModel.LayerModels.Remove(ShapeDrawingController.Shape);
             ShapeDrawingController.StopDrawing();
             DocumentChanged();
         }
@@ -376,13 +375,19 @@ namespace SVG_editor_finalproject
         private void button3_Click(object sender, EventArgs e)  // add new layer
         {
             var Layer = new LayerControl();
-            flowLayoutPanel2.Controls.Add(new LayerControl());
+            Layer.layerSelect += LayerSelect;
+            Layer.lockButtonClick += LockButton;
+            Layer.visibleButtonClick += VisibleButton;
+            Layer.frontButtonClick += FrontButton;
+            Layer.backButtonClick += BackButton;
+            flowLayoutPanel2.Controls.Add(Layer);
             LayerController.AddLayer(Layer);
+            DocumentModel.LayerModels.Add(Layer.Model); // may not need to be here
         }
 
         public void LayerSelect(object? sender, EventArgs e)
         {
-
+            LayerController.CurrentLayer = (LayerControl)sender;
         }
 
         public void LockButton(object? sender, EventArgs e)
@@ -395,11 +400,13 @@ namespace SVG_editor_finalproject
         }
         public void FrontButton(object? sender, EventArgs e)
         {
-
+            LayerController.MoveFront((LayerControl)sender, DocumentModel.LayerModels);
+            pictureBox1.Invalidate();
         }
         public void BackButton(object? sender, EventArgs e)
         {
-
+            LayerController.MoveBack((LayerControl)sender, DocumentModel.LayerModels);
+            pictureBox1.Invalidate();
         }
     }
 }

@@ -17,7 +17,7 @@
         {
             Lock = !Lock;
             Model.Locked = Lock;
-            // lockButtonClick.Invoke(this, e);
+            lockButtonClick.Invoke(this, e);
         }
         public event EventHandler lockButtonClick;
 
@@ -44,6 +44,7 @@
             { 
                 return; 
             }
+            backButtonClick.Invoke(this, e);
         }
         public event EventHandler backButtonClick;
 
@@ -52,7 +53,6 @@
             layername.Text = newName;
         }
 
-        
         private void LayerControl_OnClick(object sender, EventArgs e)
         {
             
