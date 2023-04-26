@@ -10,7 +10,7 @@
        
         public LayerController(LayerControl Layer)
         {
-            LayerIndex = 1;
+            LayerIndex = 2;
             LayerName = string.Empty;
             CurrentLayer = Layer;
             Layers.Add(CurrentLayer);
@@ -23,7 +23,6 @@
             LayerName = "Layer" + LayerIndex;
             LayerIndex++;
             Layer.RenameLayer(LayerName);
-            // DocumentModel.LayerModels.Add(Layer.Model);
         }
 
         public void MoveFront(LayerControl Layer, List<LayerModel> layerModels)

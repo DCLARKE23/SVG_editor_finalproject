@@ -21,13 +21,13 @@ namespace SVG_editor_finalproject
             UndoRedoHandler = new UndoRedoHandler(DocumentModel.Clone());
             SelectHandler = new SelectHandler();
             lineColorDialog.Color = Color.Black;
-            fillColorDialog.Color = Color.Black;
+            fillColorDialog.Color = Color.Blue;
             pictureBox1.BackColor = Color.Transparent;
             pictureBox1.BringToFront(); // grid can still be seen but shapes may also be drawn
             UpdatePanels();
             UpdateHexBoxes();
             ShapeDrawingController = new ShapeDrawingController(pictureBox1);
-            ToolController.Tool = Tool.Initial;
+            ToolController.Tool = Tool.Rectangle;
             var Layer = new LayerControl();
             Layer.layerSelect += LayerSelect;
             Layer.lockButtonClick += LockButton;
@@ -36,7 +36,6 @@ namespace SVG_editor_finalproject
             Layer.backButtonClick += BackButton;
             LayerController = new LayerController(Layer);
             flowLayoutPanel2.Controls.Add(Layer);
-            // LayerController.AddLayer(Layer);
             DocumentModel.LayerModels.Add(Layer.Model);
         }
         public void DocumentChanged()
@@ -97,11 +96,6 @@ namespace SVG_editor_finalproject
             panel1.BackColor = fillColorDialog.Color;
             panel3.BackColor = lineColorDialog.Color;
         }
-        private void UpdateHexPanels()
-        {
-            //fillColorDialog.Color = HexToRGB(textBox1.Text);
-            //lineColorDialog.Color = HexToRGB(textBox2.Text);
-        }
         private void UpdateHexBoxes()
         {
             textBox1.Text = RGBToHex(lineColorDialog.Color.R, lineColorDialog.Color.G, lineColorDialog.Color.B);
@@ -111,23 +105,6 @@ namespace SVG_editor_finalproject
         {
             return string.Format("#{0:X2}{1:X2}{2:X2}", r, g, b);
         }
-        public static Color HexToRGB(string hexValue)
-        {
-            // Strip any '#' characters from the beginning of the string
-            hexValue = hexValue.TrimStart('#');
-
-            // Convert the hex string to an integer
-            int hex = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
-
-            // Extract the red, green, and blue components from the integer
-            int red = (hex >> 16) & 0xFF;
-            int green = (hex >> 8) & 0xFF;
-            int blue = hex & 0xFF;
-
-            // Create and return a Color object representing the RGB color
-            Color color = Color.FromArgb(red, green, blue);
-            return color;
-        }       
         private void button1_Click(object sender, EventArgs e)  // colour dialog button (line)
         {
             lineColorDialog.ShowDialog();
@@ -139,19 +116,6 @@ namespace SVG_editor_finalproject
             fillColorDialog.ShowDialog();
             UpdatePanels();
             UpdateHexBoxes();
-        }
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            /*
-            if (textBox1.Text.StartsWith('#') && textBox1.Text.Length == 7)
-            {
-                UpdateHexPanels();
-            } */
-        }
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            /*
-            UpdateHexBoxes(); */
         }
 // ================================= SHAPE DRAWING ==============================================
         public void StartDrawingShape(SimpleShapeModel shape)
@@ -186,11 +150,6 @@ namespace SVG_editor_finalproject
         }
         private void rectangleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (rectangleToolStripMenuItem.Checked)
-            {
-                rectangleToolStripMenuItem.Checked = false;
-            }
-            rectangleToolStripMenuItem.Checked = true;
             ToolController.Tool = Tool.Rectangle;
             textBox3.Text = "Rectangle";
         }

@@ -61,7 +61,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(90, 28);
             this.button3.TabIndex = 2;
-            this.button3.Text = "Front";
+            this.button3.Text = "Back";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -71,6 +71,7 @@
             this.layername.Name = "layername";
             this.layername.Size = new System.Drawing.Size(90, 26);
             this.layername.TabIndex = 3;
+            this.layername.Text = "Layer1";
             // 
             // button4
             // 
@@ -78,7 +79,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(90, 28);
             this.button4.TabIndex = 4;
-            this.button4.Text = "Back";
+            this.button4.Text = "Front";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -86,13 +87,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.button4);
             this.Controls.Add(this.layername);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "LayerControl";
-            this.Size = new System.Drawing.Size(193, 101);
+            this.Size = new System.Drawing.Size(191, 101);
             this.Click += new System.EventHandler(this.LayerControl_OnClick);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -13,4 +13,8 @@
     <PackageReference Include="Svg" Version="3.4.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Screenshots\" />
+  </ItemGroup>
+
 </Project>

@@ -2,7 +2,6 @@
 {
     public enum Tool
     {
-        Initial,
         Select,
         Rectangle,
         Circle,
@@ -11,7 +10,7 @@
     }
     public class ToolController
     {
-        private Tool tool = Tool.Initial;
+        private Tool tool = Tool.Rectangle;
         public Tool Tool
         {
             get => tool;
