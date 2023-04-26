@@ -14,7 +14,9 @@ The primary features as as follows:
 
 # Libraries Used
 
-Aside from using Windows Forms, the <a href="https://github.com/svg-net/SVG">SVG.NET</a> library was used to allow for SVG graphics. I also used the project at <a href="https://github.com/cdiggins/svg-editor">https://github.com/cdiggins/svg-editor</a> written by my professor for this course. I used it as a project skeleton and for ideas throughout the development process.
+  - <a href="https://github.com/svg-net/SVG">SVG.NET</a> -> SVG graphics. 
+  -  <a href="https://github.com/cdiggins/svg-editor">https://github.com/cdiggins/svg-editor</a> -> written by my professor, project ideas and skeleton
+  -  Windows Forms
 
 # Screenshots
 
